@@ -1,4 +1,4 @@
-package com.example.donation_app;
+package com.example.donation_app.model;
 
 public class User {
 
