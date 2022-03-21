@@ -13,6 +13,12 @@ public class ProfileActivity extends AppCompatActivity {
     private Button btn_profile;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // TODO: Implement Alert Dialog for Exit
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);

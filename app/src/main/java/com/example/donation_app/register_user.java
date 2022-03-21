@@ -107,15 +107,7 @@ public class register_user extends AppCompatActivity implements View.OnClickList
 
         progressBar.setVisibility(View.VISIBLE);
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Test");
-        User user = new User(fullName, email, phoneNum, password);
-        userRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(register_user.this, "Stored", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("User");
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -133,10 +125,19 @@ public class register_user extends AppCompatActivity implements View.OnClickList
                                 public void onComplete(@NonNull Task<Void> task) {
 
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(register_user.this, "User Registered Successfully! ", Toast.LENGTH_LONG).show();
+
+                                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                Toast.makeText(register_user.this, "Please Check Your Email and Verify Your Account!", Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                finish();
+                                            }
+                                        });
 
                                     } else {
-                                        Toast.makeText(register_user.this, "Failed to Register! Please Try Again! ", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(register_user.this, "Email already in use.\nTry selecting forget password.", Toast.LENGTH_LONG).show();
                                     }
                                     progressBar.setVisibility(View.GONE);
                                 }

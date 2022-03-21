@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.register:
-                startActivity(new Intent(this, register_user.class));
+                Intent intent = new Intent(this, register_user.class);
+                startActivity(intent);
                 break;
 
             case R.id.login_butt:
@@ -104,17 +106,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     if(user.isEmailVerified()){
                         // read to user profile
-                        startActivity(new Intent(MainActivity.this,ProfileActivity.class));
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
                         progressBar.setVisibility(View.GONE);
 
                     }else{
-                        user.sendEmailVerification();
-                        Toast.makeText(MainActivity.this, "Please Check Your Email To Verify Your Account!", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(MainActivity.this, "Please Check Your Email and Verify Your Account!", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                     }
 
-                    } else {
-                    Toast.makeText(MainActivity.this, "Please Go And Check Your Email To Verify Your Account", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Invalid Email or Password.\nPlease try again.", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                 }
             }
